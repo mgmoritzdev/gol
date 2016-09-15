@@ -1,0 +1,18 @@
+.pixel {
+  width: 4%;
+  padding-bottom: 4%;
+  outline: 1px solid black;
+  display: inline-block;  
+}
+
+.font0 {
+  font-size: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
