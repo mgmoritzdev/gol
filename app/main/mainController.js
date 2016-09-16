@@ -1,8 +1,8 @@
-(function () {
-  app.controller("MainController", MainController);
+(function() {
+  app.controller('MainController', MainController);
 
   function MainController() {
     var vm = this;
-    vm.hello = "Hello, World!"
+    vm.hello = 'Hello, World!';
   }
 })();
