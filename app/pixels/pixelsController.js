@@ -1,132 +1,134 @@
-app.controller("PixelsController", ["$interval", "$timeout", PixelsController]);
+(function () {
+  app.controller("PixelsController", ["$interval", "$timeout", PixelsController]);
 
-function PixelsController($interval, $timeout) {
-  var vm = this;
+  function PixelsController($interval, $timeout) {
+    var vm = this;
 
-  vm.definition = [25, 25];
+    vm.definition = [25, 25];
 
-  vm.rows = setPixels(vm.definition[0] ,vm.definition[1]);
+    vm.rows = setPixels(vm.definition[0] ,vm.definition[1]);
 
-  vm.getColorStyle = getColorStyle;
-  vm.togglePixel = togglePixel;
+    vm.getColorStyle = getColorStyle;
+    vm.togglePixel = togglePixel;
 
-  var initialInterval = 1000;
-  var intervalDelta = -100;
+    var initialInterval = 1000;
+    var intervalDelta = -100;
 
-  $timeout(function(){
-    $interval(function () {
-      var counters = [];
+    $timeout(function(){
+      $interval(function () {
+        var counters = [];
 
-      for (var i = 0; i < vm.rows.length; i++) {
-        for (var j = 0; j < vm.rows[i].pixels.length; j++){
-          var count = countAliveNeighbours(vm.rows, i, j);
-          counters.push(count);          
+        for (var i = 0; i < vm.rows.length; i++) {
+          for (var j = 0; j < vm.rows[i].pixels.length; j++){
+            var count = countAliveNeighbours(vm.rows, i, j);
+            counters.push(count);          
+          }
         }
-      }
-      for (var i = 0; i < vm.rows.length; i++) {
-        for (var j = 0; j < vm.rows[i].pixels.length; j++){
-          nextGeneration(vm.rows[i].pixels[j], counters[i*vm.rows[i].pixels.length + j]);
-        }
-      }      
-    }, 700)
-  }, 30000);
-}
-
-function togglePixel(pixel){
-  if (pixel.color == 'black') {
-    pixel.color = 'white';
-    return;
+        for (var i = 0; i < vm.rows.length; i++) {
+          for (var j = 0; j < vm.rows[i].pixels.length; j++){
+            nextGeneration(vm.rows[i].pixels[j], counters[i*vm.rows[i].pixels.length + j]);
+          }
+        }      
+      }, 700)
+    }, 30000);
   }
 
-  pixel.color = 'black';
-  
-}
-
-function getColorStyle (pixel) {
-  return { 'background-color': pixel.color };
-}
-
-function setPixels(r, c) {
-  
-  var rows = [];
-
-  for (var i = 0; i < r; i++){
-    rows.push( { pixels: setRow(c) } );
-  }
-
-  return rows;
-}
-
-function setRow(c) {
-
-  var pixels = [];
-
-  for (var j = 0; j < c; j++){
-    //pixels.push( {color: getRandomColor() });
-    pixels.push(buildPixelObject(getWhiteColor()));
-  }
-
-  return pixels;
-}
-
-function buildPixelObject(colorString){
-  return { color: colorString };
-}
-
-function getWhiteColor() {    
-    return 'white';
-}
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
+  function togglePixel(pixel){
+    if (pixel.color == 'black') {
+      pixel.color = 'white';
+      return;
     }
-    return color;
-}
 
-function countAliveNeighbours(rows, r, c) {
-  var count = 0;
-  var belowIndex = r + 1;
-  var aboveIndex = r - 1;
-  var leftIndex = c - 1;
-  var rightIndex = c + 1;
-
-  if (r === 0) {
-    aboveIndex = rows.length - 1;
+    pixel.color = 'black';
+    
   }
 
-  if (r === rows.length - 1) {
-    belowIndex = 0;
+  function getColorStyle (pixel) {
+    return { 'background-color': pixel.color };
   }
 
-  if (c === 0) {
-    leftIndex = rows[0].pixels.length - 1;
+  function setPixels(r, c) {
+    
+    var rows = [];
+
+    for (var i = 0; i < r; i++){
+      rows.push( { pixels: setRow(c) } );
+    }
+
+    return rows;
   }
 
-  if (c === rows[0].pixels.length - 1) {
-    rightIndex = 0;
+  function setRow(c) {
+
+    var pixels = [];
+
+    for (var j = 0; j < c; j++){
+      //pixels.push( {color: getRandomColor() });
+      pixels.push(buildPixelObject(getWhiteColor()));
+    }
+
+    return pixels;
   }
 
-  count += rows[aboveIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-  count += rows[aboveIndex].pixels[c].color === 'black' ? 1 : 0;
-  count += rows[aboveIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
-  count += rows[r].pixels[leftIndex].color === 'black' ? 1 : 0;
-  count += rows[r].pixels[rightIndex].color === 'black' ? 1 : 0;
-  count += rows[belowIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-  count += rows[belowIndex].pixels[c].color === 'black' ? 1 : 0;
-  count += rows[belowIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
-
-  return count;
-}
-
-function nextGeneration(pixel, count){
-  if (pixel.color === 'white' && count === 3){
-    togglePixel(pixel);
+  function buildPixelObject(colorString){
+    return { color: colorString };
   }
 
-  if (pixel.color === 'black' && (count < 2 || count > 3)) {
-    togglePixel(pixel);
+  function getWhiteColor() {    
+      return 'white';
   }
-}
+
+  function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++ ) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+  }
+
+  function countAliveNeighbours(rows, r, c) {
+    var count = 0;
+    var belowIndex = r + 1;
+    var aboveIndex = r - 1;
+    var leftIndex = c - 1;
+    var rightIndex = c + 1;
+
+    if (r === 0) {
+      aboveIndex = rows.length - 1;
+    }
+
+    if (r === rows.length - 1) {
+      belowIndex = 0;
+    }
+
+    if (c === 0) {
+      leftIndex = rows[0].pixels.length - 1;
+    }
+
+    if (c === rows[0].pixels.length - 1) {
+      rightIndex = 0;
+    }
+
+    count += rows[aboveIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
+    count += rows[aboveIndex].pixels[c].color === 'black' ? 1 : 0;
+    count += rows[aboveIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
+    count += rows[r].pixels[leftIndex].color === 'black' ? 1 : 0;
+    count += rows[r].pixels[rightIndex].color === 'black' ? 1 : 0;
+    count += rows[belowIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
+    count += rows[belowIndex].pixels[c].color === 'black' ? 1 : 0;
+    count += rows[belowIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
+
+    return count;
+  }
+
+  function nextGeneration(pixel, count){
+    if (pixel.color === 'white' && count === 3){
+      togglePixel(pixel);
+    }
+
+    if (pixel.color === 'black' && (count < 2 || count > 3)) {
+      togglePixel(pixel);
+    }
+  }
+})();
