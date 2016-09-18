@@ -1,0 +1,12 @@
+<p>Hello!</p>
+<p>{{vm.hello}}</p>
+<div class="container">
+  <div class="row font0" ng-repeat="row in vm.rows">
+    <div class="col-md-12 font0">
+      <div ng-repeat="pixel in row.pixels" 
+        class="pixel" 
+        ng-style="vm.getColorStyle(pixel)"
+        ng-click="vm.togglePixel(pixel)"></div>        
+    </div>
+  </div>
+</div>

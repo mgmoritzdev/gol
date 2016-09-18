@@ -1,11 +1,16 @@
 require.config({
   baseUrl: '/app',
   paths: {
-    angular: '../node_modules/angular/angular'
+    angular: '../node_modules/angular/angular',
+    angularRoute: '../node_modules/angular-route/angular-route',
+    pixels: 'pixels/pixels'
   },
   shim: {
     'angular': {
       exports: 'angular'
+    },
+    angularRoute: {
+      deps: ['angular']
     }
   }
 });

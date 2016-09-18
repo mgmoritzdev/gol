@@ -1,6 +1,7 @@
-define([], function() {
+define(['app'], function() {
   var PixelsController = function($interval, $timeout) {
     var vm = this;
+    vm.hello = 'Hello from vm';
 
     vm.definition = [25, 25];
 
@@ -130,7 +131,9 @@ define([], function() {
     }
   }
 
-  PixelsController.$inject = ['$interval', '$timeout'];
+  // PixelsController.$inject = ['$interval', '$timeout'];
 
-  return PixelsController;
+  // app.controller('PixelsController', PixelsController);
+
+  return ['$interval', '$timeout', PixelsController];
 });
