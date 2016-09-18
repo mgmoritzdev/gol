@@ -1,7 +1,5 @@
-(function() {
-  app.controller('PixelsController', ['$interval', '$timeout', PixelsController]);
-
-  function PixelsController($interval, $timeout) {
+define([], function() {
+  var PixelsController = function($interval, $timeout) {
     var vm = this;
 
     vm.definition = [25, 25];
@@ -32,10 +30,10 @@
         }
       }, 700);
     }, 7000);
-  }
+  };
 
   function togglePixel(pixel) {
-    if (pixel.color == 'black') {
+    if (pixel.color === 'black') {
       pixel.color = 'white';
       return;
     }
@@ -131,4 +129,8 @@
       togglePixel(pixel);
     }
   }
-})();
+
+  PixelsController.$inject = ['$interval', '$timeout'];
+
+  return PixelsController;
+});

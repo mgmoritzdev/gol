@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="App">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/pixel.css">
   <title>Game Engine</title>
 </head>
-<body ng-controller="MainController as vm">
-  
+<body>  
   <div class="container" ng-controller="PixelsController as vm">
     <div class="row font0" ng-repeat="row in vm.rows">
       <div class="col-md-12 font0">
@@ -19,9 +18,6 @@
     </div>
   </div>
 
-  <script src="node_modules/angular/angular.js"></script>
-  <script src="app/app.js"></script>
-  <script src="app/main/mainController.js"></script>
-  <script src="app/pixels/pixelsController.js"></script>
+  <script src="node_modules/requirejs/require.js" data-main="app/main.js"></script>
 </body>
 </html>
