@@ -1,37 +1,45 @@
 (function() {
-  app.controller('PixelsController', ['$interval', '$timeout', PixelsController]);
+  app.controller('PixelsController', ['$interval', '$timeout', 'golService', PixelsController]);
 
-  function PixelsController($interval, $timeout) {
+  function PixelsController($interval, $timeout, golService) {
     var vm = this;
 
     vm.definition = [25, 25];
+    vm.totalClicksPerPlayer = 5
+    vm.remainingClicks = vm.totalClicksPerPlayer;
+    vm.currentPlayer = false;
 
     vm.rows = setPixels(vm.definition[0], vm.definition[1]);
 
     vm.getColorStyle = getColorStyle;
-    vm.togglePixel = togglePixel;
-
-    var initialInterval = 1000;
-    var intervalDelta = -100;
-    var beans;
+    vm.togglePixel = function(pixel) {
+      if (vm.remainingClicks > 0){
+        if (vm.currentPlayer){
+          changePixel(pixel, 'red');
+          vm.remainingClicks--;
+        } else {
+          changePixel(pixel, 'blue');
+          vm.remainingClicks--;
+          if (vm.remainingClicks == 0){
+            vm.currentPlayer = true;
+            vm.remainingClicks = vm.totalClicksPerPlayer;
+          }
+        }
+      }
+    };
 
     $timeout(function() {
       $interval(function() {
-        var counters = [];
+        
+        var counters = golService.getNeighboursCount(vm.rows);
 
-        for (var i = 0; i < vm.rows.length; i++) {
-          for (var j = 0; j < vm.rows[i].pixels.length; j++) {
-            var count = countAliveNeighbours(vm.rows, i, j);
-            counters.push(count);
-          }
-        }
         for (var m = 0; m < vm.rows.length; m++) {
           for (var n = 0; n < vm.rows[m].pixels.length; n++) {
-            nextGeneration(vm.rows[m].pixels[n], counters[m * vm.rows[m].pixels.length + n]);
+            nextGeneration2(vm.rows[m].pixels[n], counters[m * vm.rows[m].pixels.length + n]);
           }
         }
-      }, 700);
-    }, 7000);
+      }, 500);
+    }, 10000);
   }
 
   function togglePixel(pixel) {
@@ -44,6 +52,10 @@
 
   }
 
+  function changePixel(pixel, color) {
+    pixel.color = color;
+  }
+
   function getColorStyle(pixel) {
     return { 'background-color': pixel.color };
   }
@@ -53,17 +65,17 @@
     var rows = [];
 
     for (var i = 0; i < r; i++) {
-      rows.push({ pixels: setRow(c) });
+      rows.push({ pixels: buildWhiteRow(c) });
     }
 
     return rows;
   }
 
-  function setRow(c) {
+  function buildWhiteRow(numberOfColumns) {
 
     var pixels = [];
 
-    for (var j = 0; j < c; j++) {
+    for (var j = 0; j < numberOfColumns; j++) {
       pixels.push(buildPixelObject(getWhiteColor()));
     }
 
@@ -87,41 +99,6 @@
     return color;
   }
 
-  function countAliveNeighbours(rows, r, c) {
-    var count = 0;
-    var belowIndex = r + 1;
-    var aboveIndex = r - 1;
-    var leftIndex = c - 1;
-    var rightIndex = c + 1;
-
-    if (r === 0) {
-      aboveIndex = rows.length - 1;
-    }
-
-    if (r === rows.length - 1) {
-      belowIndex = 0;
-    }
-
-    if (c === 0) {
-      leftIndex = rows[0].pixels.length - 1;
-    }
-
-    if (c === rows[0].pixels.length - 1) {
-      rightIndex = 0;
-    }
-
-    count += rows[aboveIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[aboveIndex].pixels[c].color === 'black' ? 1 : 0;
-    count += rows[aboveIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
-    count += rows[r].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[r].pixels[rightIndex].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[c].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
-
-    return count;
-  }
-
   function nextGeneration(pixel, count) {
     if (pixel.color === 'white' && count === 3) {
       togglePixel(pixel);
@@ -129,6 +106,16 @@
 
     if (pixel.color === 'black' && (count < 2 || count > 3)) {
       togglePixel(pixel);
+    }
+  }
+
+  function nextGeneration2(pixel, count) {
+    if (pixel.color === 'white' && count === 3) {
+      changePixel(pixel, 'red');
+    }
+
+    if (pixel.color !== 'white' && (count < 2 || count > 3)) {
+      changePixel(pixel, 'white');
     }
   }
 })();
