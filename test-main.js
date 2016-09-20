@@ -14,7 +14,7 @@ require.config({
   paths: {
     angular: 'node_modules/angular/angular',
     angularMocks: 'node_modules/angular-mocks/angular-mocks',
-    pixels: 'pixels/pixels'
+    pixels: 'pixels/pixelsController'
   },
   shim: {
     angular: {

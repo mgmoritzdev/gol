@@ -6,8 +6,17 @@
   <link rel="stylesheet" href="css/pixel.css">
   <title>Game Engine</title>
 </head>
-<body>
-  <div ng-view></div>
+<body>  
+  <div class="container" ng-controller="PixelsController as vm">
+    <div class="row font0" ng-repeat="row in vm.rows">
+      <div class="col-md-12 font0">
+        <div ng-repeat="pixel in row.pixels" 
+          class="pixel" 
+          ng-style="vm.getColorStyle(pixel)"
+          ng-click="vm.togglePixel(pixel)"></div>        
+      </div>
+    </div>
+  </div>
   <script src="node_modules/requirejs/require.js" data-main="app/main.js"></script>
 </body>
 </html>

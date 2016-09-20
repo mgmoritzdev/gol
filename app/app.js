@@ -1,9 +1,15 @@
-define(['angular', 'angularRoute', 'pixels'], function(angular, angularRoute, pixels) {
-  var app = angular.module('app', ['ngRoute', 'pixels']);
+define(['angular'], function(angular) {
+  var app = angular.module('app', []);
 
-  app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({redirectTo: '/pixels'});
-  }]);
+  app.config([
+    '$controllerProvider',
+    // '$compileProvider',
+    // '$filterProvider',
+    // '$provide',
+    function($controllerProvider) {
+      app.controller = $controllerProvider.register;
+    }
+  ]);
 
   return app;
 });

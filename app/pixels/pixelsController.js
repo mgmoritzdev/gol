@@ -1,5 +1,5 @@
-define(['app'], function() {
-  var PixelsController = function($interval, $timeout) {
+define(['app'], function(app) {
+  return app.controller('PixelsController', ['$interval', '$timeout', function($interval, $timeout) {
     var vm = this;
     vm.hello = 'Hello from vm';
 
@@ -31,109 +31,103 @@ define(['app'], function() {
         }
       }, 700);
     }, 7000);
-  };
 
-  function togglePixel(pixel) {
-    if (pixel.color === 'black') {
-      pixel.color = 'white';
-      return;
+    function togglePixel(pixel) {
+      if (pixel.color === 'black') {
+        pixel.color = 'white';
+        return;
+      }
+
+      pixel.color = 'black';
+
     }
 
-    pixel.color = 'black';
-
-  }
-
-  function getColorStyle(pixel) {
-    return { 'background-color': pixel.color };
-  }
-
-  function setPixels(r, c) {
-
-    var rows = [];
-
-    for (var i = 0; i < r; i++) {
-      rows.push({ pixels: setRow(c) });
+    function getColorStyle(pixel) {
+      return { 'background-color': pixel.color };
     }
 
-    return rows;
-  }
+    function setPixels(r, c) {
 
-  function setRow(c) {
+      var rows = [];
 
-    var pixels = [];
+      for (var i = 0; i < r; i++) {
+        rows.push({ pixels: setRow(c) });
+      }
 
-    for (var j = 0; j < c; j++) {
-      pixels.push(buildPixelObject(getWhiteColor()));
+      return rows;
     }
 
-    return pixels;
-  }
+    function setRow(c) {
 
-  function buildPixelObject(colorString) {
-    return { color: colorString };
-  }
+      var pixels = [];
 
-  function getWhiteColor() {
-    return 'white';
-  }
+      for (var j = 0; j < c; j++) {
+        pixels.push(buildPixelObject(getWhiteColor()));
+      }
 
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  function countAliveNeighbours(rows, r, c) {
-    var count = 0;
-    var belowIndex = r + 1;
-    var aboveIndex = r - 1;
-    var leftIndex = c - 1;
-    var rightIndex = c + 1;
-
-    if (r === 0) {
-      aboveIndex = rows.length - 1;
+      return pixels;
     }
 
-    if (r === rows.length - 1) {
-      belowIndex = 0;
+    function buildPixelObject(colorString) {
+      return { color: colorString };
     }
 
-    if (c === 0) {
-      leftIndex = rows[0].pixels.length - 1;
+    function getWhiteColor() {
+      return 'white';
     }
 
-    if (c === rows[0].pixels.length - 1) {
-      rightIndex = 0;
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     }
 
-    count += rows[aboveIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[aboveIndex].pixels[c].color === 'black' ? 1 : 0;
-    count += rows[aboveIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
-    count += rows[r].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[r].pixels[rightIndex].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[c].color === 'black' ? 1 : 0;
-    count += rows[belowIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
+    function countAliveNeighbours(rows, r, c) {
+      var count = 0;
+      var belowIndex = r + 1;
+      var aboveIndex = r - 1;
+      var leftIndex = c - 1;
+      var rightIndex = c + 1;
 
-    return count;
-  }
+      if (r === 0) {
+        aboveIndex = rows.length - 1;
+      }
 
-  function nextGeneration(pixel, count) {
-    if (pixel.color === 'white' && count === 3) {
-      togglePixel(pixel);
+      if (r === rows.length - 1) {
+        belowIndex = 0;
+      }
+
+      if (c === 0) {
+        leftIndex = rows[0].pixels.length - 1;
+      }
+
+      if (c === rows[0].pixels.length - 1) {
+        rightIndex = 0;
+      }
+
+      count += rows[aboveIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
+      count += rows[aboveIndex].pixels[c].color === 'black' ? 1 : 0;
+      count += rows[aboveIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
+      count += rows[r].pixels[leftIndex].color === 'black' ? 1 : 0;
+      count += rows[r].pixels[rightIndex].color === 'black' ? 1 : 0;
+      count += rows[belowIndex].pixels[leftIndex].color === 'black' ? 1 : 0;
+      count += rows[belowIndex].pixels[c].color === 'black' ? 1 : 0;
+      count += rows[belowIndex].pixels[rightIndex].color === 'black' ? 1 : 0;
+
+      return count;
     }
 
-    if (pixel.color === 'black' && (count < 2 || count > 3)) {
-      togglePixel(pixel);
+    function nextGeneration(pixel, count) {
+      if (pixel.color === 'white' && count === 3) {
+        togglePixel(pixel);
+      }
+
+      if (pixel.color === 'black' && (count < 2 || count > 3)) {
+        togglePixel(pixel);
+      }
     }
-  }
-
-  // PixelsController.$inject = ['$interval', '$timeout'];
-
-  // app.controller('PixelsController', PixelsController);
-
-  return ['$interval', '$timeout', PixelsController];
+  }]);
 });
