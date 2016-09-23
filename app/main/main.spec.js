@@ -1,6 +1,6 @@
 describe('MainController', function() {
 
-  beforeEach(module('App'));
+  beforeEach(module('app'));
 
   var $controller;
 

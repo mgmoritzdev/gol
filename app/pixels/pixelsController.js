@@ -1,11 +1,13 @@
 (function() {
-  app.controller('PixelsController', ['$interval', '$timeout', 'golService', PixelsController]);
+  angular
+    .module('app')
+    .controller('PixelsController', ['$interval', '$timeout', 'golService', PixelsController]);
 
   function PixelsController($interval, $timeout, golService) {
     var vm = this;
 
     vm.definition = [25, 25];
-    vm.totalClicksPerPlayer = 5
+    vm.totalClicksPerPlayer = 5;
     vm.remainingClicks = vm.totalClicksPerPlayer;
     vm.currentPlayer = false;
 
@@ -13,14 +15,14 @@
 
     vm.getColorStyle = getColorStyle;
     vm.togglePixel = function(pixel) {
-      if (vm.remainingClicks > 0){
-        if (vm.currentPlayer){
+      if (vm.remainingClicks > 0) {
+        if (vm.currentPlayer) {
           changePixel(pixel, 'red');
           vm.remainingClicks--;
         } else {
           changePixel(pixel, 'blue');
           vm.remainingClicks--;
-          if (vm.remainingClicks == 0){
+          if (vm.remainingClicks === 0) {
             vm.currentPlayer = true;
             vm.remainingClicks = vm.totalClicksPerPlayer;
           }
@@ -30,7 +32,7 @@
 
     $timeout(function() {
       $interval(function() {
-        
+
         var counters = golService.getNeighboursCount(vm.rows);
 
         for (var m = 0; m < vm.rows.length; m++) {
@@ -43,7 +45,7 @@
   }
 
   function togglePixel(pixel) {
-    if (pixel.color == 'black') {
+    if (pixel.color === 'black') {
       pixel.color = 'white';
       return;
     }

@@ -1,10 +1,10 @@
-(function () {
-  app.factory('golService', golService);
+(function() {
+  angular.module('app').factory('golService', golService);
 
   function golService() {
     return {
       getNeighboursCount: getNeighboursCount
-    }
+    };
   }
 
   function getNeighboursCount(rows) {
@@ -22,7 +22,7 @@
 
   function countAliveNeighbours(rows, r, c) {
     var neighbours = getNeighbours(rows, r, c);
-    
+
     var count = neighbours.filter(x => x.color!=='white').length;
 
     return count;
@@ -30,7 +30,7 @@
 
   function countAliveNeighboursByColor(rows, r, c) {
     var neighbours = getNeighbours(rows, r, c);
-        
+
     var colors = neighbours
       .map(x => x.color)
       .reduce((amount, color) => {

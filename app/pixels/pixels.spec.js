@@ -1,6 +1,6 @@
 describe('PixelsController', function() {
 
-  beforeEach(module('App'));
+  beforeEach(module('app'));
 
   var $controller;
 
