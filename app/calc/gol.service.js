@@ -32,8 +32,8 @@
     var neighbours = getNeighbours(rows, r, c);
         
     var colors = neighbours
-      .map(x => x.color)      
-      .reduce(function(amount, color) {
+      .map(x => x.color)
+      .reduce((amount, color) => {
         amount[color] = ++amount[color] || 1;
         return amount;
       }, {});
@@ -45,10 +45,10 @@
     var belowIndex = r === rows.length -1 ? 0 : r + 1;
     var aboveIndex = r === 0 ? rows.length - 1 : r - 1;
     var leftIndex = c === 0 ? rows[0].pixels.length - 1 : c - 1;
-    var rightIndex = c === rows[0].pixels.length - 1 ? 0 : c + 1;    
+    var rightIndex = c === rows[0].pixels.length - 1 ? 0 : c + 1;
 
     var neighbours = [];
-    neighbours.push(rows[aboveIndex].pixels[leftIndex]);    
+    neighbours.push(rows[aboveIndex].pixels[leftIndex]);
     neighbours.push(rows[aboveIndex].pixels[c]);
     neighbours.push(rows[aboveIndex].pixels[rightIndex]);
     neighbours.push(rows[r].pixels[leftIndex]);
