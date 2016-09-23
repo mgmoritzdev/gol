@@ -7,41 +7,16 @@
     var vm = this;
 
     vm.definition = [25, 25];
-    vm.totalClicksPerPlayer = 5;
-    vm.remainingClicks = vm.totalClicksPerPlayer;
-    vm.currentPlayer = false;
 
     vm.rows = setPixels(vm.definition[0], vm.definition[1]);
 
     vm.getColorStyle = getColorStyle;
-    vm.togglePixel = function(pixel) {
-      if (vm.remainingClicks > 0) {
-        if (vm.currentPlayer) {
-          changePixel(pixel, 'red');
-          vm.remainingClicks--;
-        } else {
-          changePixel(pixel, 'blue');
-          vm.remainingClicks--;
-          if (vm.remainingClicks === 0) {
-            vm.currentPlayer = true;
-            vm.remainingClicks = vm.totalClicksPerPlayer;
-          }
-        }
-      }
+
+    golService.run(vm.rows);
+
+    vm.pixelClicked = function(pixel) {
+      changePixel(pixel, golService.getNewPixelColor(pixel));
     };
-
-    $timeout(function() {
-      $interval(function() {
-
-        var counters = golService.getNeighboursCount(vm.rows);
-
-        for (var m = 0; m < vm.rows.length; m++) {
-          for (var n = 0; n < vm.rows[m].pixels.length; n++) {
-            nextGeneration2(vm.rows[m].pixels[n], counters[m * vm.rows[m].pixels.length + n]);
-          }
-        }
-      }, 500);
-    }, 10000);
   }
 
   function togglePixel(pixel) {
@@ -108,16 +83,6 @@
 
     if (pixel.color === 'black' && (count < 2 || count > 3)) {
       togglePixel(pixel);
-    }
-  }
-
-  function nextGeneration2(pixel, count) {
-    if (pixel.color === 'white' && count === 3) {
-      changePixel(pixel, 'red');
-    }
-
-    if (pixel.color !== 'white' && (count < 2 || count > 3)) {
-      changePixel(pixel, 'white');
     }
   }
 })();
