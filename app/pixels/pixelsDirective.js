@@ -1,17 +1,29 @@
 (function() {
-  angular
-    .module('app')
+  angular.module('app')
+    .directive('pixels', pixelsDirective)
     .controller('PixelsController', ['$interval', '$timeout', 'golService', PixelsController]);
+
+  function pixelsDirective() {
+    return {
+      restrict: 'E',
+      templateUrl: 'app/pixels/pixels.html',
+      controller: PixelsController,
+      controllerAs: 'vm',
+      scope: {
+        rows: '&',
+        getColorStyle: '&',
+        pixelClicked: '&'
+      },
+      bindToController: true
+    };
+  }
 
   function PixelsController($interval, $timeout, golService) {
     var vm = this;
+    var definition = [25, 25];
 
-    vm.definition = [25, 25];
-
-    vm.rows = setPixels(vm.definition[0], vm.definition[1]);
-
+    vm.rows = setPixels(definition[0], definition[1]);
     vm.getColorStyle = getColorStyle;
-
     golService.run(vm.rows);
 
     vm.pixelClicked = function(pixel) {

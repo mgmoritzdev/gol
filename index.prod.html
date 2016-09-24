@@ -7,16 +7,7 @@
 </head>
 <body ng-controller="MainController as vm">
   
-  <div class="container" ng-controller="PixelsController as vm">
-    <div class="row font0" ng-repeat="row in vm.rows">
-      <div class="col-md-12 font0">
-        <div ng-repeat="pixel in row.pixels" 
-          class="pixel" 
-          ng-style="vm.getColorStyle(pixel)"
-          ng-click="vm.pixelClicked(pixel)"></div>
-      </div>
-    </div>
-  </div>
+  <pixels></pixels>
 
   <script src="js/libs.js"></script>
   <script src="js/app.js"></script>
