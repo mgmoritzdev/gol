@@ -7,7 +7,7 @@
     return {
       restrict: 'E',
       templateUrl: 'app/pixels/pixels.html',
-      controller: PixelsController,
+      controller: 'PixelsController',
       controllerAs: 'vm',
       scope: {
         rows: '&',

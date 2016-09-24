@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="app" ng-strict-di>
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/pixel.css">
-  <title>Game Engine</title>
+  <title>Game Of Life</title>
 </head>
-<body ng-controller="MainController as vm">
+<body>
   
   <pixels></pixels>
 
   <script src="node_modules/angular/angular.js"></script>
   <script src="app/app.js"></script>
-  <script src="app/main/mainController.js"></script>  
   <script src="app/calc/gol.service.js"></script>
   <script src="app/pixels/pixelsDirective.js"></script>
 </body>
