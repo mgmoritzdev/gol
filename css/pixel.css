@@ -2,7 +2,8 @@
   width: 4%;
   padding-bottom: 4%;
   outline: 1px solid black;
-  display: inline-block;  
+  display: inline-block; 
+  z-index: 99;
 }
 
 .font0 {

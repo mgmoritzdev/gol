@@ -18,7 +18,8 @@
     return {
       getNeighboursCount: getNeighboursCount,
       getNewPixelColor: getNewPixelColor,
-      run: run
+      run: run,
+      getScore: getScore
     };
   }
 
@@ -101,6 +102,25 @@
         amount[color] = ++amount[color] || 1;
         return amount;
       }, {});
+
+    return colors;
+  }
+
+  function getScore() {
+    if (!rows) {return {'red': 0, 'blue':0};}
+    let pixels = [];
+    for (let i = 0; i < rows.length; i++){
+      for (let j = 0; j < rows[i].pixels.length; j++){
+        pixels.push(rows[i].pixels[j]);
+      }
+    }
+
+    let colors = pixels
+      .map(pixel => pixel.color)
+      .reduce((amount, color) => {
+        amount[color] = ++amount[color] || 1;
+        return amount;
+      }, {white: 0, red: 0, blue: 0});
 
     return colors;
   }

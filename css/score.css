@@ -1,0 +1,19 @@
+.score {
+	position: fixed;
+	font-size: 14px;
+	z-index: 999;
+	border-radius: 6px;
+	padding: 3px;
+}
+
+.red {
+	background: rgba(220, 70, 70, 0.5);
+	top: 2px;
+	right: 2px;
+}
+
+.blue {
+	background: rgba(70, 70, 220, 0.5);
+	top: 2px;
+	left: 2px;
+}
